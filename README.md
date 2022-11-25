@@ -21,6 +21,6 @@ If no arguments are provided, `ransomwhere`will automatically execute the `encry
 # from the binary
 % ./app -log=warn -delete=false -mode=encrypt
 
-# encrypt AND delete files like a real ransomware (DANGEROUS)
-% ./app -delete=true
+# encrypt, delete original files and wipe backups like a real ransomware (DANGEROUS)
+% ./app -delete=true -wipe=true
 ```
