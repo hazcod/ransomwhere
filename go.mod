@@ -1,4 +1,4 @@
-module ransomwhere
+module github.com/hazcod/ransomwhere
 
 go 1.19
 
