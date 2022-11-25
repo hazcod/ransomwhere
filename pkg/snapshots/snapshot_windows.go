@@ -1,7 +1,9 @@
 package snapshots
 
 import (
+	"bytes"
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"os/exec"
 )
 
