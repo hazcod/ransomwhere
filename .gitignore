@@ -3,3 +3,5 @@ app
 **/*.crypted
 **/*.log
 .idea/
+.generated-go-semantic-release-changelog.md
+.semrel/
