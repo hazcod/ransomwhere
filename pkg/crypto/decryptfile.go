@@ -9,7 +9,9 @@ import (
 	"strings"
 )
 
+// DecryptFile will decrypt any files ending with the ransomware extension and optionally remove the encrypted copy
 func DecryptFile(l *logrus.Entry, cryptedPath string, identity age.Identity, delete bool) error {
+	// try opening the
 	cryptedFile, err := os.Open(cryptedPath)
 	if err != nil {
 		return fmt.Errorf("could not read file: %v", err)
