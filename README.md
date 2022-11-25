@@ -1,9 +1,9 @@
 # Ransomwhere
 
-A Proof of Concept ransomware sample that encrypts your files to test out your ransomware detection & prevention strategies.</br>
-I am not responsible for any damage caused by this software.
-
+A Proof of Concept ransomware sample that encrypts your files to test out your ransomware detection & prevention strategies.
 If no arguments are provided, `ransomwhere`will automatically execute the `encrypt` mode without deleting the original files.
+
+I am not responsible for any damage caused by this software.
 
 ## Building
 
