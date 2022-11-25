@@ -3,10 +3,10 @@ package main
 import (
 	"filippo.io/age"
 	"flag"
+	"github.com/hazcod/ransomwhere/pkg/crypto"
+	"github.com/hazcod/ransomwhere/pkg/file"
+	"github.com/hazcod/ransomwhere/pkg/snapshots"
 	"github.com/sirupsen/logrus"
-	"ransomwhere/pkg/crypto"
-	"ransomwhere/pkg/file"
-	"ransomwhere/pkg/snapshots"
 	"strings"
 )
 

