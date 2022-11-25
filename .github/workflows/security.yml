@@ -88,7 +88,7 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           hide-progress: false
-          exit-code: '1'
+          exit-code: 0
           ignore-unfixed: true
           scan-type: 'fs'
           format: 'sarif'
