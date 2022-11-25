@@ -14,10 +14,10 @@ func WalkFiles(directory string, l *logrus.Logger, f func(name, filePath string)
 	if err := fs.WalkDir(dirFS, ".", func(relPath string, d fs.DirEntry, err error) error {
 		path := filepath.Join(GetHomeDirectoryWithFallback(), relPath)
 
-		logger := l.WithField("path", dirFS).WithField("root", directory)
+		logger := l.WithField("path", path)
 
 		if err != nil {
-			logger.WithError(err).Errorf("could not walk %s", path)
+			logger.WithError(err).Warnf("error while walking %s", path)
 			return nil
 		}
 

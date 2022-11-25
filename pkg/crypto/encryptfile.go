@@ -9,8 +9,8 @@ import (
 	"os"
 )
 
-func EncryptFile(l *logrus.Entry, path, cryptExtension string, keys []age.Recipient, delete bool) error {
-	cryptPath := path + cryptExtension
+func EncryptFile(l *logrus.Entry, path string, keys []age.Recipient, delete bool) error {
+	cryptPath := path + CryptedExtension
 
 	if _, err := os.Stat(cryptPath); !errors.Is(err, os.ErrNotExist) {
 		return nil
@@ -28,17 +28,27 @@ func EncryptFile(l *logrus.Entry, path, cryptExtension string, keys []age.Recipi
 		return fmt.Errorf("could not read file %s: %v", path, err)
 	}
 
+	filePermissions := os.FileMode(0600)
+	fileInfo, err := os.Stat(path)
+	if err != nil {
+		l.WithError(err).WithField("path", path).Error("could not retrieve file permissions, using 0600")
+	} else {
+		filePermissions = fileInfo.Mode()
+	}
+
 	if _, err := writer.Write(origBytes); err != nil {
 		return fmt.Errorf("could not write crypted file %s: %v", path, err)
 	}
 
-	if err := os.WriteFile(cryptPath, out.Bytes(), 0600); err != nil {
+	if err := os.WriteFile(cryptPath, out.Bytes(), filePermissions); err != nil {
 		return fmt.Errorf("could not write crypted file %s: %v", path, err)
 	}
 
 	l.WithField("crypt_path", cryptPath).Debug("encrypted file")
 
 	if delete {
+		l.WithField("path", path).Debug("deleting")
+
 		if err := os.Remove(path); err != nil {
 			return fmt.Errorf("could not delete %s: %v", path, err)
 		} else {
