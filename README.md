@@ -23,4 +23,7 @@ I am not responsible for any damage caused by this software.
 
 # encrypt, delete original files and wipe backups like a real ransomware (DANGEROUS)
 % ./app -delete=true -wipe=true
+
+# revert the ransom operation and restore any files
+% ./app -mode=decrypt
 ```
