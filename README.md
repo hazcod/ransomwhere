@@ -15,11 +15,11 @@ I am not responsible for any damage caused by this software.
 ## Usage
 
 ```shell
-# straight from source
+# straight from source, encrypt in our home directory
 % make FLAGS="-log=warn -delete=false -mode=encrypt"
 
-# from the binary
-% ./app -log=warn -delete=false -mode=encrypt
+# from the binary, encrypt /home/ransom/
+% ./app -log=warn -delete=false -mode=encrypt -path=/home/ransom/
 
 # encrypt, delete original files and wipe backups like a real ransomware (DANGEROUS)
 % ./app -delete=true -wipe=true
