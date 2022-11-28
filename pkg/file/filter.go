@@ -25,6 +25,7 @@ var (
 	}
 )
 
+// MatchFile will verify whether we want to encrypt (or decrypt) a given file on the current operation mode
 func MatchFile(opMode, name string) bool {
 	extension := filepath.Ext(name)
 	if extension == "" {

