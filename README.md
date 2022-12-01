@@ -12,7 +12,25 @@ I am not responsible for any damage caused by this software.
 % make build
 ```
 
+
 ## Usage
+
+```shell
+% ransomwhere -h
+Usage of ransomwhere:
+  -delete
+        Delete files after encrypting.
+  -log string
+        The log level to use. (default "error")
+  -mode string
+        Encrypt or decrypt the ransomware files. (default "encrypt")
+  -path string
+        Path to the directory where to traverse files to ransom. (default "/Users/niels")
+  -wipe
+        Wipe local snapshots while encrypting.
+```
+
+## Examples
 
 ```shell
 # straight from source, encrypt in our home directory
