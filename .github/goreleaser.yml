@@ -35,10 +35,5 @@ builds:
 
 archives:
   -
-    name_template: "ransomwhere_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    name_template: "1p2sen_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     format: zip
-    replacements:
-      darwin: macos
-      linux: linux
-      windows: windows
-      amd64: x86_64
