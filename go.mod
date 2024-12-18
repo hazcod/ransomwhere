@@ -3,7 +3,7 @@ module github.com/hazcod/ransomwhere
 go 1.19
 
 require (
-	filippo.io/age v1.1.1
+	filippo.io/age v1.2.1
 	github.com/sirupsen/logrus v1.9.3
 )
 
